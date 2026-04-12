@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ShadeClimb</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+
+  <body>
+    <h1>ShadeClimb</h1>
+
+    <h2>Escuelas de escalada</h2>
+
+    <table id="cragsTable">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Provincia</th>
+          <th>Nº vías</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2 id="selectedTitle" style="display: none"></h2>
+
+    <div id="contentWrapper">
+      <div id="shadeData"></div>
+      <div id="mapContainer"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <div id="loader" class="hidden">
+      <div class="spinner"></div>
+      <div class="loaderText">Cargando...</div>
+    </div>
+  </body>
+</html>
