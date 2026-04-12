@@ -2,4 +2,4 @@
 __pycache__/
 *.pyc
 proyecto_qgis/
-data/
+data/cuenca.tif
