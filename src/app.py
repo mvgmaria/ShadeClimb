@@ -23,6 +23,11 @@ def crag_data():
     return get_crag()
 
 
+@app.route("/api/sectors/<int:crag_id>")
+def sectors(crag_id):
+    return jsonify(get_sector(crag_id))
+
+
 @app.route("/api/datos_sombra")
 def walls_data():
     return jsonify(main())

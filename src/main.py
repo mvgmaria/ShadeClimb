@@ -81,7 +81,7 @@ def main():
             # actualizamos nuestro array con la orientación obtenida en grados, para facilitar la asignación de colores en la generación posterior del plot
             aspect_deg_masked[polygon_wall_pixels] = aspects_deg
             # calculamos el porcentaje de sombra de cada polígono para cada hora del día
-            for hour in range(24):
+            for hour in range(5, 23):
                 dt = datetime(
                     2025, 8, 22, hour, 0, 0, tzinfo=tz
                 )  # fecha hardcodeada de momento
@@ -113,10 +113,19 @@ def main():
 
                 # guardamos los valores en nuestro geodataframe
                 walls.at[idx, f"shade_{hour:02d}"] = percent_shade
+                mean_dir = aspect_to_compass(aspects_deg.mean())
+
                 wall_data.append(
-                    f"Pared {idx}, {hour:02d}:00 - {percent_shade:.1f}% de sombra"
+                    {
+                        "orientation": mean_dir,
+                        "hour": f"{hour:02d}:00",
+                        "shade": round(percent_shade, 1),
+                    }
                 )
-                print(f"Pared {idx}, {hour:02d}:00 - {percent_shade:.1f}% de sombra")
+
+                print(
+                    f"Pared {mean_dir}, {hour:02d}:00 - {percent_shade:.1f}% de sombra"
+                )
 
     # código para la generación del plot
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -147,7 +156,7 @@ def main():
     cbar = plt.colorbar(im, ticks=ticks)
     cbar.ax.set_yticklabels(labels)
 
-    ax.set_title("Sector Juego de Bolos")
+    ax.set_title("Sector Juego de Bolos")  # hardcodeado por ahora
     ax.axis("off")
 
     plt.savefig(
@@ -169,6 +178,25 @@ def main():
         "wall_data": wall_data,
         "map_url": f"{base_dir}/static/juego_de_bolos_recortado.png",
     }
+
+
+def aspect_to_compass(deg):
+    if np.isnan(deg):
+        return "desconocida"
+
+    directions = [
+        "Norte",
+        "Nordeste",
+        "Este",
+        "Sudeste",
+        "Sur",
+        "Suroeste",
+        "Oeste",
+        "Noroeste",
+    ]
+
+    idx = int((deg + 22.5) % 360 // 45)
+    return directions[idx]
 
 
 if __name__ == "__main__":

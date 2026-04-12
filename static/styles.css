@@ -48,10 +48,11 @@ tr:hover {
 }
 
 /* MAPA DEL SECTOR */
+
 #mapContainer {
     flex: 2;
     max-width: 40%;
-    margin-top: 42px;   /* 👈 AJUSTE DE ALINEACIÓN */
+    margin-top: 42px;  
 }
 
 #mapContainer img {
@@ -120,4 +121,19 @@ tr:hover {
     font-size: 20px;
     font-weight: bold;
     color: #2c3e50;
+}
+
+/* BOTÓN "VOLVER A ESCUELAS" */
+
+#backBtn {
+    padding: 8px 14px;
+    border: none;
+    background: #333;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#backBtn:hover {
+    background: #555;
 }

@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 proyecto_qgis/
 data/cuenca.tif
+.env
+Juego-de-Bolos-y-Portero-de-noche-Panoramica-y-acceso-3.jpg
