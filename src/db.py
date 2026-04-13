@@ -1,18 +1,16 @@
 import psycopg2
-from flask import jsonify
-from dotenv import load_dotenv
+from psycopg2 import sql
 import os
 
-load_dotenv()
+# para producción estas variables estaría definidas en un archivo .env, pero para facilitar la corrección y testing se ha optado por exponer las credenciales, teniendo la base de datos un muestra trivial de información
+DB_NAME = "Crags_db"
+DB_USER = "postgres"
+DB_PW = "ABC123"
+DB_HOST = "db"
 
 
 def get_connection():
-    return psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PW"),
-        host=os.getenv("DB_HOST"),
-    )
+    return psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PW, host=DB_HOST)
 
 
 def get_crag():
@@ -37,7 +35,7 @@ def get_crag():
 
     conn.close()
 
-    return jsonify(crags)
+    return crags
 
 
 def get_sector(crag_id):

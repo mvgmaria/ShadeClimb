@@ -18,7 +18,7 @@ import random
 processed_sector = {}
 
 
-def main():
+def main(day, month, year):
     # paths a mis archivos (capa vectorial con el sector de escalada y raster de con el DEM - Modelo digital de elevación de Cuenca)
     base_dir = os.path.dirname(os.path.dirname(__file__))
 
@@ -51,7 +51,7 @@ def main():
 
     # Como queremos dar información genérica, además de la específica de la orientación general de la pared, añadimos la columna de "orientación media" en nuestro objeto Geodataframe, así como una columna para cada hora en la que mostraremos qué porcentaje de sombra está incidiendo
     walls["mean_aspect_deg"] = np.nan
-    for hour in range(24):
+    for hour in range(5, 23):
         walls[f"shade_{hour:02d}"] = np.nan
 
     # ponemos las coordenadas de cuenca para calcular una altitud y azimut aproximado del sol
@@ -83,7 +83,7 @@ def main():
             # calculamos el porcentaje de sombra de cada polígono para cada hora del día
             for hour in range(5, 23):
                 dt = datetime(
-                    2025, 8, 22, hour, 0, 0, tzinfo=tz
+                    year, month, day, hour, 0, 0, tzinfo=tz
                 )  # fecha hardcodeada de momento
                 sun_altitude = get_altitude(latitude, longitude, dt)
                 sun_azimuth = get_azimuth(latitude, longitude, dt)

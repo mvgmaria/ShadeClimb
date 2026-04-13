@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 from main import *
 from db import *
 from pathlib import Path
@@ -20,7 +20,7 @@ def home():
 
 @app.route("/api/crags")
 def crag_data():
-    return get_crag()
+    return jsonify(get_crag())
 
 
 @app.route("/api/sectors/<int:crag_id>")
@@ -30,7 +30,12 @@ def sectors(crag_id):
 
 @app.route("/api/datos_sombra")
 def walls_data():
-    return jsonify(main())
+
+    day = int(request.args.get("day"))
+    month = int(request.args.get("month"))
+    year = int(request.args.get("year"))
+
+    return jsonify(main(day, month, year))
 
 
 if __name__ == "__main__":

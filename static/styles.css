@@ -137,3 +137,65 @@ tr:hover {
 #backBtn:hover {
     background: #555;
 }
+
+.selected {
+    background-color: #d0ebff;
+    font-weight: bold;
+}
+
+#simulationPanel {
+    margin: 40px auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+#simulationPanel h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+/* FILA HORIZONTAL */
+.simInputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* INPUTS */
+.simInputs input {
+    width: 90px;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+/* BOTÓN "Simular" */
+#simulateBtn {
+    height: 40px;
+    padding: 0 18px;
+    border: none;
+    background: #2c3e50;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 20px;
+    margin-left: 8px; /* 👈 separación del último input */
+}
+
+#simulateBtn:hover {
+    background: #1f2a36;
+}
