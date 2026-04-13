@@ -15,6 +15,7 @@
 - **API:** Flask
 - **Frontend:** HTML, CSS, JavaScript
 - **Base de datos:** PostgreSQL
+- **Despliegue:** Docker Compose
 
 ---
 
@@ -27,15 +28,9 @@ git clone https://github.com/mvgmaria/ShadeClimb.git
 cd ShadeClimb
 ```
 
-Instalar dependencias:
-
-```bash
-pip install -r requirements.txt
-```
-
 ---
 
-Este proyecto utiliza archivos con datos GIS. Parte de ellos están incluidos en el repositorio, pero los raster de cada una de las escuelas (`.tif`) no se incluyen debido a su tamaño.
+Este proyecto utiliza archivos con datos GIS. Parte de ellos están incluidos en el repositorio, pero los ráster de cada una de las escuelas (`.tif`) no se incluyen debido a su tamaño.
 
 Por el momento, solo se cuenta con una escuela de escalada procesada: Cuenca.
 
@@ -55,12 +50,12 @@ El repositorio ya incluye los archivos relativos a los sectores de escalada de e
 
 ---
 
-## Ejecución
+### Despliegue con Docker Compose
 
 Para iniciar la aplicación:
 
 ```bash
-python src/app.py
+docker-compose up --build
 ```
 
 La aplicación estará disponible en:
