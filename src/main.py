@@ -51,7 +51,7 @@ def main(day, month, year):
 
     # Como queremos dar información genérica, además de la específica de la orientación general de la pared, añadimos la columna de "orientación media" en nuestro objeto Geodataframe, así como una columna para cada hora en la que mostraremos qué porcentaje de sombra está incidiendo
     walls["mean_aspect_deg"] = np.nan
-    for hour in range(5, 23):
+    for hour in range(4, 23):
         walls[f"shade_{hour:02d}"] = np.nan
 
     # ponemos las coordenadas de cuenca para calcular una altitud y azimut aproximado del sol
@@ -81,7 +81,7 @@ def main(day, month, year):
             # actualizamos nuestro array con la orientación obtenida en grados, para facilitar la asignación de colores en la generación posterior del plot
             aspect_deg_masked[polygon_wall_pixels] = aspects_deg
             # calculamos el porcentaje de sombra de cada polígono para cada hora del día
-            for hour in range(5, 23):
+            for hour in range(4, 23):
                 dt = datetime(
                     year, month, day, hour, 0, 0, tzinfo=tz
                 )  # fecha hardcodeada de momento
@@ -156,7 +156,6 @@ def main(day, month, year):
     cbar = plt.colorbar(im, ticks=ticks)
     cbar.ax.set_yticklabels(labels)
 
-    ax.set_title("Sector Juego de Bolos")  # hardcodeado por ahora
     ax.axis("off")
 
     plt.savefig(

@@ -4,9 +4,9 @@ import os
 
 # para producción estas variables estaría definidas en un archivo .env, pero para facilitar la corrección y testing se ha optado por exponer las credenciales, teniendo la base de datos un muestra trivial de información
 DB_NAME = "Crags_db"
-DB_USER = "postgres"
+DB_USER = "postgres"  # Shadeclimb_user
 DB_PW = "ABC123"
-DB_HOST = "db"
+DB_HOST = "db"  # localhost
 
 
 def get_connection():

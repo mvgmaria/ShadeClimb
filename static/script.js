@@ -1,3 +1,22 @@
+function shadeToColor(pct) {
+    const stops = [
+        { at: 0,   r: 245, g: 230, b: 200 },
+        { at: 50,  r: 168, g: 191, b: 212 },
+        { at: 100, r: 43,  g: 76,  b: 111 },
+    ];
+
+    const lo = [...stops].reverse().find(s => s.at <= pct) ?? stops[0];
+    const hi = stops.find(s => s.at > pct) ?? stops[stops.length - 1];
+    const t = lo.at === hi.at ? 0 : (pct - lo.at) / (hi.at - lo.at);
+
+    const r = Math.round(lo.r + t * (hi.r - lo.r));
+    const g = Math.round(lo.g + t * (hi.g - lo.g));
+    const b = Math.round(lo.b + t * (hi.b - lo.b));
+
+    return { bg: `rgb(${r},${g},${b})`, text: pct > 55 ? 'white' : '#2c2c2c' };
+}
+
+
 window.onload = async () => {
     document.getElementById("loader").classList.add("hidden");
 
@@ -5,6 +24,10 @@ window.onload = async () => {
     document.getElementById("sectorsTable").style.display = "none";
     document.getElementById("backBtn").style.display = "none";
     document.getElementById("simulationPanel").style.display = "none";
+
+    document.getElementById("infoCardCrags").style.display = "flex";
+    document.getElementById("infoCardSectors").style.display = "none";
+    document.getElementById("hintCrags").style.display = "block";
 
     setTitle("Escuelas de escalada");
 
@@ -49,11 +72,14 @@ async function loadCrags() {
         `;
 
         tr.onclick = async () => {
-
             document.getElementById("cragsTable").style.display = "none";
             document.getElementById("sectorsTable").style.display = "table";
             document.getElementById("simulationPanel").style.display = "none";
-            document.getElementById("backBtn").style.display = "block"; // ✅ RESTAURADO
+            document.getElementById("backBtn").style.display = "block";
+
+            document.getElementById("infoCardCrags").style.display = "none";
+            document.getElementById("infoCardSectors").style.display = "flex";
+            document.getElementById("hintCrags").style.display = "none";
 
             setTitle(`Sectores de ${crag.nombre}`);
 
@@ -80,7 +106,6 @@ async function loadSectors(cragId) {
     emptyState.style.display = "none";
 
     if (!data || data.length === 0) {
-
         document.getElementById("sectorsTable").style.display = "none";
 
         emptyState.style.display = "block";
@@ -115,7 +140,6 @@ async function loadSectors(cragId) {
         `;
 
         tr.onclick = () => {
-
             if (selectedSectorRow) {
                 selectedSectorRow.classList.remove("selected");
             }
@@ -134,7 +158,6 @@ async function loadSectors(cragId) {
 
 
 document.getElementById("simulateBtn").onclick = async () => {
-
     const day = document.getElementById("day").value;
     const month = document.getElementById("month").value;
     const year = document.getElementById("year").value;
@@ -148,7 +171,6 @@ document.getElementById("simulateBtn").onclick = async () => {
 };
 
 async function loadShade(day, month, year) {
-
     const container = document.getElementById("shadeData");
     const mapContainer = document.getElementById("mapContainer");
 
@@ -183,17 +205,20 @@ async function loadShade(day, month, year) {
         let first = true;
 
         Object.keys(walls).forEach(id => {
-
             const btn = document.createElement("button");
             btn.textContent = `Pared ${id}`;
 
             const render = () => {
                 content.innerHTML = "";
 
-                walls[id].forEach(t => {
+                walls[id].forEach(item => {
+                    const pct = parseFloat(item.match(/([\d.]+)%/)?.[1] ?? 0);
+                    const { bg, text } = shadeToColor(pct);
                     const div = document.createElement("div");
                     div.className = "card";
-                    div.textContent = t;
+                    div.textContent = item;
+                    div.style.backgroundColor = bg;
+                    div.style.color = text;
                     content.appendChild(div);
                 });
 
@@ -216,7 +241,6 @@ async function loadShade(day, month, year) {
         img.src = "/static/juego_de_bolos_recortado.png?v=" + Date.now();
         img.style.width = "100%";
         img.style.borderRadius = "10px";
-
         mapContainer.appendChild(img);
 
     } catch (err) {
@@ -227,7 +251,6 @@ async function loadShade(day, month, year) {
 }
 
 document.getElementById("backBtn").onclick = () => {
-
     document.getElementById("cragsTable").style.display = "table";
     document.getElementById("sectorsTable").style.display = "none";
     document.getElementById("simulationPanel").style.display = "none";
@@ -238,6 +261,10 @@ document.getElementById("backBtn").onclick = () => {
 
     document.getElementById("emptyState").innerHTML = "";
     document.getElementById("emptyState").style.display = "none";
+
+    document.getElementById("infoCardCrags").style.display = "flex";
+    document.getElementById("infoCardSectors").style.display = "none";
+    document.getElementById("hintCrags").style.display = "block";
 
     selectedSectorRow = null;
 

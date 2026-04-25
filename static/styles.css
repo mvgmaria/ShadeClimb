@@ -52,7 +52,7 @@ tr:hover {
 #mapContainer {
     flex: 2;
     max-width: 40%;
-    margin-top: 42px;  
+    margin-top: 42px;
 }
 
 #mapContainer img {
@@ -100,7 +100,7 @@ tr:hover {
 }
 
 #loader.active {
-    display:flex
+    display: flex;
 }
 
 .spinner {
@@ -193,9 +193,46 @@ tr:hover {
     justify-content: center;
 
     margin-top: 20px;
-    margin-left: 8px; /* 👈 separación del último input */
+    margin-left: 8px;
 }
 
 #simulateBtn:hover {
     background: #1f2a36;
+}
+
+.info-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f0f4f8;
+    border: 1px solid #d9e2ec;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin: 12px auto;
+    width: 80%;
+    font-size: 16px;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.info-card-body {
+    text-align: center;
+}
+
+.info-card-body strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+}
+
+.info-card-body p {
+    margin: 0;
+}
+
+.hint-text {
+    font-size: 15px;
+    color: #888;
+    margin: 4px auto 16px;
+    width: 80%;
+    text-align: center;
 }

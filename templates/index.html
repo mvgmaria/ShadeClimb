@@ -13,6 +13,16 @@
   <body>
     <h1>ShadeClimb</h1>
 
+    <div id="infoCardCrags" class="info-card">
+      <div class="info-card-body">
+        <p>
+          ShadeClimb te ayuda a planificar tus salidas de escalada calculando la
+          incidencia del sol en cada pared según el día que elijas. Selecciona
+          una escuela para empezar.
+        </p>
+      </div>
+    </div>
+
     <h2 id="mainTitle">Escuelas de escalada</h2>
 
     <table id="cragsTable">
@@ -26,6 +36,16 @@
       <tbody></tbody>
     </table>
 
+    <div id="hintCrags" class="hint-text">
+      Haz clic en una escuela para ver sus sectores
+    </div>
+
+    <div id="infoCardSectors" class="info-card" style="display: none">
+      <div class="info-card-body">
+        <p>Haz clic en un sector para simular la incidencia solar</p>
+      </div>
+    </div>
+
     <table id="sectorsTable" style="display: none">
       <thead>
         <tr>
@@ -38,12 +58,26 @@
       <tbody></tbody>
     </table>
 
+    <div id="hintSectors" class="hint-text" style="display: none">
+      Haz clic en un sector para simular la incidencia solar
+    </div>
+
     <div id="emptyState" style="display: none"></div>
 
     <h2 id="selectedTitle" style="display: none"></h2>
 
     <div id="simulationPanel" style="display: none">
       <h3>Simulación solar</h3>
+
+      <div id="infoCardSimulation" class="info-card">
+        <div class="info-card-body">
+          <p>
+            Introduce el día en el que planeas escalar. El sistema calculará la
+            posición del sol hora a hora y estimará qué porcentaje de cada pared
+            estará en sombra a lo largo del día.
+          </p>
+        </div>
+      </div>
 
       <div class="simInputs">
         <input type="number" id="day" placeholder="Día" min="1" max="31" />
