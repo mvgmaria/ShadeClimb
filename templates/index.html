@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <title>ShadeClimb</title>
-
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
@@ -11,89 +10,105 @@
   </head>
 
   <body>
-    <h1>ShadeClimb</h1>
+    <div class="app">
+      <h1>ShadeClimb</h1>
+      <p class="subtitle">
+        Planifica tu escalada según la sombra en cada sector
+      </p>
 
-    <div id="infoCardCrags" class="info-card">
-      <div class="info-card-body">
-        <p>
-          ShadeClimb te ayuda a planificar tus salidas de escalada calculando la
-          incidencia del sol en cada pared según el día que elijas. Selecciona
-          una escuela para empezar.
-        </p>
-      </div>
-    </div>
-
-    <h2 id="mainTitle">Escuelas de escalada</h2>
-
-    <table id="cragsTable">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Provincia</th>
-          <th>Nº vías</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <div id="hintCrags" class="hint-text">
-      Haz clic en una escuela para ver sus sectores
-    </div>
-
-    <div id="infoCardSectors" class="info-card" style="display: none">
-      <div class="info-card-body">
-        <p>Haz clic en un sector para simular la incidencia solar</p>
-      </div>
-    </div>
-
-    <table id="sectorsTable" style="display: none">
-      <thead>
-        <tr>
-          <th>Sector</th>
-          <th>Nº vías</th>
-          <th>Min grado</th>
-          <th>Max grado</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <div id="hintSectors" class="hint-text" style="display: none">
-      Haz clic en un sector para simular la incidencia solar
-    </div>
-
-    <div id="emptyState" style="display: none"></div>
-
-    <h2 id="selectedTitle" style="display: none"></h2>
-
-    <div id="simulationPanel" style="display: none">
-      <h3>Simulación solar</h3>
-
-      <div id="infoCardSimulation" class="info-card">
+      <div id="infoCardCrags" class="info-card">
         <div class="info-card-body">
           <p>
-            Introduce el día en el que planeas escalar. El sistema calculará la
-            posición del sol hora a hora y estimará qué porcentaje de cada pared
-            estará en sombra a lo largo del día.
+            <strong>ShadeClimb</strong> calcula la
+            <strong>incidencia del sol</strong> en cada pared según el
+            <strong>día que elijas</strong>.
           </p>
+          <p>Selecciona una escuela para empezar.</p>
         </div>
       </div>
 
-      <div class="simInputs">
-        <input type="number" id="day" placeholder="Día" min="1" max="31" />
-        <input type="number" id="month" placeholder="Mes" min="1" max="12" />
-        <input type="number" id="year" placeholder="Año" />
-        <button id="simulateBtn">Simular</button>
+      <div id="infoCardSectors" class="info-card" style="display: none">
+        <div class="info-card-body">
+          <p>Haz clic en un sector para simular la incidencia solar</p>
+        </div>
       </div>
-    </div>
 
-    <button id="backBtn" style="display: none; margin: 10px auto">
-      ⬅ Volver a Escuelas
-    </button>
+      <h2 id="mainTitle">Escuelas de escalada</h2>
 
-    <div id="contentWrapper">
-      <div id="shadeData"></div>
-      <div id="mapContainer"></div>
+      <table id="cragsTable">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Provincia</th>
+            <th>Nº vías</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <table id="sectorsTable" style="display: none">
+        <thead>
+          <tr>
+            <th>Sector</th>
+            <th>Nº vías</th>
+            <th>Min grado</th>
+            <th>Max grado</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div id="emptyState" style="display: none"></div>
+
+      <button id="backBtn" style="display: none; margin: 10px auto">
+        ⬅ Volver a Escuelas
+      </button>
+
+      <div id="simulationPanel" style="display: none">
+        <h3>Simulación solar</h3>
+
+        <div id="infoCardSimulation" class="info-card">
+          <div class="info-card-body">
+            <p>
+              Introduce el día en el que planeas escalar. El sistema calculará
+              la posición del sol hora a hora y estimará qué porcentaje de cada
+              pared estará en sombra.
+            </p>
+          </div>
+        </div>
+
+        <div class="simInputs">
+          <input type="number" id="day" placeholder="Día" min="1" max="31" />
+          <input type="number" id="month" placeholder="Mes" min="1" max="12" />
+          <input type="number" id="year" placeholder="Año" />
+          <button id="simulateBtn">Simular</button>
+        </div>
+      </div>
+
+      <div id="contentWrapper">
+        <div id="shadeData"></div>
+
+        <div id="mapContainer">
+          <div id="mapHeader" class="map-header" style="display: none">
+            Mapa del sector
+          </div>
+          <div class="legend" id="orientationLegend" style="display: none">
+            <div class="legend-title">Orientación de paredes</div>
+            <div class="legend-item">
+              <span class="legend-dot norte"></span> Norte
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot sur"></span> Sur
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot este"></span> Este
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot oeste"></span> Oeste
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="loader" class="hidden">

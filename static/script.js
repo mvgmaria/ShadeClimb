@@ -27,7 +27,6 @@ window.onload = async () => {
 
     document.getElementById("infoCardCrags").style.display = "flex";
     document.getElementById("infoCardSectors").style.display = "none";
-    document.getElementById("hintCrags").style.display = "block";
 
     setTitle("Escuelas de escalada");
 
@@ -79,8 +78,11 @@ async function loadCrags() {
 
             document.getElementById("infoCardCrags").style.display = "none";
             document.getElementById("infoCardSectors").style.display = "flex";
-            document.getElementById("hintCrags").style.display = "none";
 
+            // Hide legend when switching crag
+            document.getElementById("orientationLegend").style.display = "none";
+            document.getElementById("mapHeader").style.display = "none";
+            
             setTitle(`Sectores de ${crag.nombre}`);
 
             await loadSectors(crag.id_escuela);
@@ -115,9 +117,12 @@ async function loadSectors(cragId) {
                 margin-top: 20px;
                 background: #fff3cd;
                 border: 1px solid #ffeeba;
-                border-radius: 8px;
+                border-radius: 10px;
                 color: #856404;
-                font-size: 16px;
+                font-size: 15px;
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
             ">
                 Escuela pendiente de procesamiento
             </div>
@@ -147,7 +152,7 @@ async function loadSectors(cragId) {
             selectedSectorRow = tr;
             tr.classList.add("selected");
 
-            document.getElementById("simulationPanel").style.display = "block";
+            document.getElementById("simulationPanel").style.display = "flex";
         };
 
         tbody.appendChild(tr);
@@ -173,9 +178,14 @@ document.getElementById("simulateBtn").onclick = async () => {
 async function loadShade(day, month, year) {
     const container = document.getElementById("shadeData");
     const mapContainer = document.getElementById("mapContainer");
+    const legend = document.getElementById("orientationLegend");
 
     container.innerHTML = "";
-    mapContainer.innerHTML = "";
+
+    const existingImg = mapContainer.querySelector("img");
+    if (existingImg) existingImg.remove();
+
+    legend.style.display = "none";
 
     showLoader();
 
@@ -241,7 +251,10 @@ async function loadShade(day, month, year) {
         img.src = "/static/juego_de_bolos_recortado.png?v=" + Date.now();
         img.style.width = "100%";
         img.style.borderRadius = "10px";
-        mapContainer.appendChild(img);
+        mapContainer.insertBefore(img, legend);
+
+        legend.style.display = "flex";
+        document.getElementById("mapHeader").style.display = "block";
 
     } catch (err) {
         container.innerHTML = "Error cargando datos";
@@ -257,14 +270,17 @@ document.getElementById("backBtn").onclick = () => {
     document.getElementById("backBtn").style.display = "none";
 
     document.getElementById("shadeData").innerHTML = "";
-    document.getElementById("mapContainer").innerHTML = "";
+
+    const existingImg = document.querySelector("#mapContainer img");
+    if (existingImg) existingImg.remove();
+    document.getElementById("orientationLegend").style.display = "none";
+    document.getElementById("mapHeader").style.display = "none";
 
     document.getElementById("emptyState").innerHTML = "";
     document.getElementById("emptyState").style.display = "none";
 
     document.getElementById("infoCardCrags").style.display = "flex";
     document.getElementById("infoCardSectors").style.display = "none";
-    document.getElementById("hintCrags").style.display = "block";
 
     selectedSectorRow = null;
 

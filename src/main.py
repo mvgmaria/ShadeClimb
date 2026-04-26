@@ -127,41 +127,45 @@ def main(day, month, year):
                     f"Pared {mean_dir}, {hour:02d}:00 - {percent_shade:.1f}% de sombra"
                 )
 
-    # código para la generación del plot
-    fig, ax = plt.subplots(figsize=(12, 8))
+    # no necesitamos generar el plot cada vez, pero mantenemos aquí la función por si quisieramos generar uno nuevo con alguna modificación
+    def plot_generation():
+        # código para la generación del plot
+        fig, ax = plt.subplots(figsize=(12, 8))
 
-    colors = ["#0000ff", "#00ff00", "#ff0000", "#ffa500"]
-    cmap = mcolors.LinearSegmentedColormap.from_list("north_to_south", colors)
+        colors = ["#0000ff", "#00ff00", "#ff0000", "#ffa500"]
+        cmap = mcolors.LinearSegmentedColormap.from_list("north_to_south", colors)
 
-    # obtenemos los límites de nuestros polígonos
-    xmin, ymin, xmax, ymax = walls.total_bounds
-    buffer = 5  # padding
-    xmin -= buffer
-    ymin -= buffer
-    xmax += buffer
-    ymax += buffer
+        # obtenemos los límites de nuestros polígonos
+        xmin, ymin, xmax, ymax = walls.total_bounds
+        buffer = 5  # padding
+        xmin -= buffer
+        ymin -= buffer
+        xmax += buffer
+        ymax += buffer
 
-    # asignamos los límites obtenidos a las coordenadas mapeadas a píxeles de nuestro raster de elevación transformado
-    row_min, col_min = rowcol(transform, xmin, ymax)
-    row_max, col_max = rowcol(transform, xmax, ymin)
+        # asignamos los límites obtenidos a las coordenadas mapeadas a píxeles de nuestro raster de elevación transformado
+        row_min, col_min = rowcol(transform, xmin, ymax)
+        row_max, col_max = rowcol(transform, xmax, ymin)
 
-    # cogemos de nuestro array de orientaciones la información dentro de los límites dibujados por el polígono
-    aspect_crop = aspect_deg_masked[row_min:row_max, col_min:col_max]
+        # cogemos de nuestro array de orientaciones la información dentro de los límites dibujados por el polígono
+        aspect_crop = aspect_deg_masked[row_min:row_max, col_min:col_max]
 
-    im = ax.imshow(aspect_crop, cmap=cmap)
+        im = ax.imshow(aspect_crop, cmap=cmap)
 
-    ticks = [0, 90, 180, 270]
-    labels = ["N", "E", "S", "W"]
+        # ticks = [0, 90, 180, 270]
+        # labels = ["N", "E", "S", "W"]
 
-    cbar = plt.colorbar(im, ticks=ticks)
-    cbar.ax.set_yticklabels(labels)
+        # cbar = plt.colorbar(im, ticks=ticks)
+        # cbar.ax.set_yticklabels(labels)
 
-    ax.axis("off")
+        ax.axis("off")
 
-    plt.savefig(
-        f"{base_dir}/static/juego_de_bolos_recortado.png", dpi=300, bbox_inches="tight"
-    )
-    plt.close(fig)
+        plt.savefig(
+            f"{base_dir}/static/juego_de_bolos_recortado.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+        plt.close(fig)
 
     # este diccionario se lo pasaría a una función posterior que aún tengo en desarrollo
     global processed_sector
@@ -173,6 +177,25 @@ def main(day, month, year):
         "elevation": elevation,
         "walls_crs": walls_crs,
     }
+
+    # esta función nos sirve para hacer una capa que superponer al tif original, y así obtener la imagen que finalmente estamos mostrando al usuario en la interfaz (más intuitiva que sobre fondo blanco)
+    def save_as_geotiff(aspect_deg_masked):
+
+        base_dir = os.path.dirname(os.path.dirname(__file__))
+
+        output_path = os.path.join(base_dir, "data/juego_bolos_orientaciones.gpkg")
+        tif_path = os.path.join(base_dir, "data/cuenca.tif")
+
+        with rasterio.open(tif_path) as src:
+            profile = src.profile.copy()
+
+        profile.update(dtype=rasterio.float32, count=1, nodata=np.nan)
+
+        with rasterio.open(output_path, "w", **profile) as dst:
+            dst.write(aspect_deg_masked.astype(np.float32), 1)
+
+    # save_as_geotiff(aspect_deg_masked)
+
     return {
         "wall_data": wall_data,
         "map_url": f"{base_dir}/static/juego_de_bolos_recortado.png",
